@@ -25,20 +25,36 @@ class App extends React.Component{
   //  this.setState({surname:evt.target.value});
   //}
 
+
+
+
   onInputChange =(evt) =>{
     const fields = this.state.fields;
     fields[evt.target.name] = evt.target.value;
     this.setState({fields:fields});
   }
 
+  objectManager = (o , action) => {
+    for(var key in o){
+      if (o.hasOwnProperty(key)) {
+        action(key)
+      }
+    }
+  }
+
   handlesubmit(event){
     event.preventDefault();
     //leggere
-   
-    //console.log("hai scritto" + this.state.fields.name + this.state.fields.surname);
+   this.objectManager(this.state.fields, (key) => console.log (this.state.fields[key]))
+    
     //ora che ho il dato posso aggiornato lo stato 
     //let names = this.state.names.slice();
     //names.push(name);
+    const emptyfield = {...this.state.fields}
+    this.objectManager(emptyfield,(key) => {emptyfield[key]=''})
+    this.setState({fields:emptyfield})
+
+
     let names = [...this.state.names, this.state.fields ];
     this.setState({names:names});
     //pulisco vecchio metodo averere ref nella form 
@@ -46,16 +62,18 @@ class App extends React.Component{
     //pulisco
     //this.setState({name:''});
     //this.setState({surname:''});
-    const emptyfield = {...this.state.fields};
-    for(var key in Object.keys(emptyfield)){
-      if (emptyfield.hasOwnProperty(key)) {
-        emptyfield[key]=''
-      }
+    // const emptyfield = {...this.state.fields};
+    // for(var key in emptyfield){
+    //   if (emptyfield.hasOwnProperty(key)) {
+    //     emptyfield[key]=''
+    //   }
+    // }
     }
+  
   //object.keys(emptyfield).forEach(i => emptyfield[i]='');
     
-  //this.setState({fields:emptyfield})
-  }
+
+  
 
   render(){
     let listanomi = this.state.names.map((item, index) =>{
